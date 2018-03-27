@@ -1,0 +1,7 @@
+---
+
+- hosts: s3fs
+  remote_user: vagrant
+  become: yes
+  roles:
+    - s3fs

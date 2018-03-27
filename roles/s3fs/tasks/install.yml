@@ -1,0 +1,41 @@
+---
+
+- name: S3FS | Install prerequisites packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - automake
+    - autotools-dev
+    - fuse
+    - g++
+    - git
+    - libcurl4-gnutls-dev
+    - libfuse-dev
+    - libssl-dev
+    - libxml2-dev
+    - make
+    - pkg-config
+
+- name: S3FS | Get sources from repository
+  git:
+    dest: "{{ s3fs_source_path }}"
+    repo: "{{ s3fs_git_repo }}"
+
+- name: S3FS | Build sources
+  command: ./autogen.sh && ./configure --prefix=/usr && make
+  args:
+    chdir: "{{ s3fs_source_path }}"
+
+- name: S3FS | Install sources
+  command: make install
+  args:
+    chdir: "{{ s3fs_source_path }}"
+
+- name: S3FS | Configure options
+  template:
+    src: "etc/fuse.conf.j2"
+    dest: "/etc/fuse.conf"
+    owner: root
+    group: root
+    mode: 0644

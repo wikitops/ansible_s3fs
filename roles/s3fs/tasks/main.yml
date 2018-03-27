@@ -1,0 +1,9 @@
+---
+
+- name: S3FS | Installation
+  import_tasks: install.yml
+  tags: s3fs_install
+
+- name: S3FS | Configuraion
+  import_tasks: configure.yml
+  tags: s3fs_configure
